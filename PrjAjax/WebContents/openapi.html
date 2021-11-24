@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style></style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	var skyState = new Map();
+	skyState.set('1','맑음');
+	skyState.set('2','구름');
+	skyState.set('3','흐림');
+	skyState.set('4','비');
+	skyState.set('5','눈');
+	skyState.set('6','비눈');
+	skyState.set('7','눈비');
+	skyState.set('8','소나기');
+
+
+  $( function() {
+	$('#courseID').on('change', function() {
+		$('#btnGetData').click();		
+	});  
+	$('#btnGetData').on('click', function() {
+		$.ajax( {
+			// xml 이 실행중인 자바스크립트와 주소가 다르면 CORS 정책에 의해 오류발생
+			// 해결책 : 자바로 data를 가져온다 - servlet로 구현
+			//url  : 'http://apis.data.go.kr/1360000/TourStnInfoService/getTourStnVilageFcst?serviceKey=VVYz4W%2BGHKMfPgAWB%2FNEJ0pWPvbjfbjo2k92wTKBbcYMKQQN566vxUAr3QmK7XErBUhhsfp%2BJKu2O3AYiGjECg%3D%3D&pageNo=1&numOfRows=10&dataType=XML&CURRENT_DATE=2019122010&HOUR=24&COURSE_ID=1',
+			url     : 'http://localhost:9090/PrjAjax/openapi1',
+			data    : { courseID : $('#courseID').val() },
+			type    : 'GET',
+			success : function( xml ) {
+				console.log(xml);
+				
+				// 출력
+				// 코스명              courseName
+				// 코스지역이름        courseAreaName
+				// 관광 지점 지역이름  spotAreaName
+				// 관광지 명           spotName
+				// 하늘 상태           sky
+				// 날짜시간             tm
+				// 강수확률            pop
+				$(xml).find('item').each(function( index ) {
+					var courseName     = $(this).find('courseName').html();
+					var courseAreaName = $(this).find('courseAreaName').html();
+					var spotAreaName   = $(this).find('spotAreaName').html();
+					var spotName       = $(this).find('spotName').html();
+					var sky            = $(this).find('sky').html();
+					var tm             = $(this).find('tm').html();
+					var pop            = $(this).find('pop').html();
+					
+					var html           = '<ul>';
+					html      += '<li>코스ID:' + $('#courseID').val() + '</li>' ;
+					html      += '<li>코스명:' + courseName + '</li>' ;
+					html      += '<li>코스지역이름:' + courseAreaName + '</li>' ;
+					html      += '<li>관광 지점 지역이름:' + spotAreaName + '</li>' ;
+					html      += '<li>관광지 명:'  + spotName + '</li>' ;
+					html      += '<li>하늘 상태:'  + skyState.get(sky) + '</li>' ;
+					html      += '<li>날짜시간:'   + tm + '</li>' ;
+					html      += '<li>강수확률:'   + pop + '%</li>' ;
+					html      += '</ul>';
+					
+					$('#div1').html(html);
+					
+				})
+				
+			},
+			error : function(xhr) {
+				alert(xhr.status + ':' + xhr.statusText);
+			}
+		});
+	});
+  });
+</script>
+</head>
+<body>
+   <h2>관광지 날씨</h2>
+   <input type="number" id="courseID"  value="1" />
+   <button id="btnGetData">Get Data</button>
+   <div id="div1"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

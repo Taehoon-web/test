@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style></style>
+
+<script>
+  window.onload = function() {
+	  var  btnGetJSON  =  document.getElementById("btnGetJSON");
+	  btnGetJSON.onclick = function( e ) {
+		  var  xhr   =   new XMLHttpRequest();
+		  xhr.onreadystatechange =  function() {
+			  if( xhr.readyState == 4 ) {
+				  if( xhr.status == 200 ) {
+					  var data  =  xhr.responseText;
+					  // alert(typeof data); // string
+					  var obj   =  JSON.parse( data );
+					  console.log(obj) // alert( obj );
+					  
+					  var  div1  = document.getElementById('div1');
+					  var  tag   = '<ul>';
+					  obj.forEach( function( friend, index ) {
+						  tag  += '<li>'
+						  tag  += friend.name + ':' + friend.language;
+						  tag  += '</li>'; 
+					  });
+					  tag       += '</ul>';					  
+					  div1.innerHTML = tag;
+				  }
+			  }
+		  }
+		  xhr.open('GET', 'data/friends.json', true );
+		  xhr.send();
+	  }
+  }
+</script>
+</head>
+<body>
+  <button id="btnGetJSON">Get Json Data</button>
+  <div id="div1"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

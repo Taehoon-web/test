@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+  .green { color:green; }
+  .red   { color:red;   }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  window.onload = function() {
+	  var  btnGetData = document.getElementById('btnGetData');
+	  var  div1       = document.getElementById('div1');
+	  btnGetData.onclick = function() {
+		  // 1. xhr 객체를 준비한다
+		  var  xhr    = new XMLHttpRequest();
+		  // GET : 주소줄에 요청 data 전달		  
+		//  var  loc    = 'https://reqres.in/api/products/4';
+		  var  loc    = 'c.jsp?id=sky';
+		  
+		  // 2. 요청을 준비한다( open: GET/POST/PUT/DELETE/HEAD/OPTIONS/TRACE)
+		  // true   :  비동기 - asynchronus
+		  //           데이터가 호출된 후에 data가 도착할때 까지 기다리지 낳고
+		  //           나머지 코딩을 처리
+		  // false  :  동기  -  synchronus
+		  //           호출한 후에 data 가 도착할대 까지 기다림
+		  xhr.open('GET', loc, false);
+		  
+		  // 3. 요청을 보낸다
+		  xhr.send();
+		  
+		  // 데이터가 도착할때까지 기다림 : 동기
+		  
+		  // 4. 데이터가 도작하면
+		  var result = xhr.responseText;
+		  alert(result);
+		  var html = result;
+		  div1.innerHTML = html;
+		  
+	  }
+  }
+</script>
+</head>
+<body>
+   <h2>Ajax : Asynchronous Javascript And XML</h2>
+   <p>페이지 전체를 바꾸지 않고 서버의 data를 가져온다</p>
+   <button id="btnGetData">Get Data</button>
+   <div id="div1"></div>
+   <a href="b.jsp">이동</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

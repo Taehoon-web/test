@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<albunlist>
+  <album>
+    <name>이문세</name>
+    <song>붉은 노을</song>
+    <price>13000</price>
+  </album>
+  <album>
+    <name>아이유</name>
+    <song>붉은 노을</song>
+    <price>13500</price>
+  </album>
+  <album>
+    <name>빅뱅</name>
+    <song>붉은 노을</song>
+    <price>11600</price>
+  </album>
+</albunlist>

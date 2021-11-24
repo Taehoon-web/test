@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+  #result div {
+     border        : 1px solid blue;
+     border-radius : 10px;      
+     margin: 20px;
+     padding: 20px;
+    /* width: 350px;
+     float :left; */
+  }
+
+</style>
+<script>
+  window.onload = function() {
+	  var  btnGetXML  =  document.getElementById("btnGetXML");
+	  btnGetXML.addEventListener('click', function( e ) {
+		  var xhr  =  new XMLHttpRequest();
+		  xhr.onreadystatechange = function() {
+			  if( xhr.readyState == 4 ) {
+				  if( xhr.status == 200 ) {
+ 					 /* xhr.responseText -> xmlDoc(객체) 변환
+					  var result = xhr.responseText;
+					  // alert(typeof result);  // string 
+					  // xml 객체로 변환
+					  var parser = new DOMParser();
+					  var xmlDoc = parser.parseFromString(result, "text/xml");
+					  */
+					  var xmlDoc = xhr.responseXML;  // mime type :text/xml 로 내려와야 쓸 수 있다
+					  alert(typeof xmlDoc);    // xml
+					  
+					  var msg        = '';
+					  var names      = xmlDoc.getElementsByTagName('name'); 
+					  var languages  = xmlDoc.getElementsByTagName('language');
+					  
+					  Array.from(names).forEach( function(name,  i) {
+						  console.dir( name )
+						  msg       += '<div>';
+						  msg       += '<h2> ' + name.innerHTML     + '</h2>';
+						  msg       += '<h2> ' + languages[i].innerHTML + '</h2>';
+						  msg       += '</div>';
+					  }); 
+					  
+					  /*
+					  for (var i = 0; i < names.length; i++) {
+						  console.dir( names[i] )
+						  msg       += '<div>';
+						 // msg       += '<h2> ' + names[i].innerHTML     + '</h2>';
+						 // msg       += '<h2> ' + languages[i].innerHTML + '</h2>';
+						  msg       += '<h2> ' + names[i].childNodes[0].nodeValue     + '</h2>';
+						  msg       += '<h2> ' + languages[i].childNodes[0].nodeValue     + '</h2>';
+						  msg       += '</div>';					  
+					  } */
+					  
+					  var resultDiv = document.getElementById('result');
+					  resultDiv.innerHTML = msg;
+				  }
+			  }
+		  }
+		  
+		  xhr.open('GET', 
+				  'data/friends.xml',
+				  true  );
+		  xhr.send();
+	  });
+  }
+</script>
+</head>
+<body>
+  <button id="btnGetXML">Get XMLData</button>
+  <div id="result"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+

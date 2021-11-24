@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+  #div1  div  {
+      border:1px solid red;
+      border-radius: 10px;
+      margin : 10px; padding:10px;
+      width  : 400px;
+      float  : left;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $( function() {
+     $('#btn1').on('click', function() {
+    	 /*
+    	 $.ajax(  {
+    		 url      : 'data/data.html',
+    		// data     : {    
+    	    //	 id   : 3,	 name : 'sky'
+    	    //  },     // ?id=3&name=sky
+    		 type     : 'GET',  // GET/POST/PUT/...    		  
+    		// datatype : '',  // text, html, xml, json
+    		 success : function( data ) {  // 4, 2000
+    			 alert(data); // data = xhr.responsetext
+    			 $('#div1').html( data );
+    		 },
+    		 error   : function(xhr, ) {   // 4, 500
+    			 alert(xhr.status + ':' + xhr.statusText)
+    		 }    		 
+    	 } );
+    	 */
+    	 $.get('data/data.html', function(html) {
+    		 $('#div1').html(html);
+    	 })
+     }); 
+     
+     $('#btn2').on('click', function(e) {
+    	 $.get('data/datalist.json', function(dataList) {
+    		 console.log(dataList);
+    		 var html = '';
+    		 $.each( dataList,  function(index, data) {
+    			 html += '<div>';
+    			 html += '<h2>';
+    			 html += index + ':' + data.
+    			 name;
+    			 html += '</h2>';
+    			 html += '<p>' + data.song  + '</p>';
+    			 html += '<p>' + data.price  + '</p>';    			 
+    			 html += '</div>';
+    		 } );    		 
+    		 
+    		 $('#div1').html( html );
+    	 })
+     });
+  });
+</script>
+</head>
+<body>
+  <button  id="btn1">Get Html Data</button>
+  <button  id="btn2">Get JSON Data</button>
+  <div id="div1"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

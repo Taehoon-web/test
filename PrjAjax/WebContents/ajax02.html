@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+  .green { color:green; }
+  .red   { color:red;   }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  window.onload = function() {
+	  var  btnGetData = document.getElementById('btnGetData');
+	  var  div1       = document.getElementById('div1');
+	  btnGetData.onclick = function() {
+		  // 1. xhr 객체 준비한다
+		  var  xhr    = new XMLHttpRequest();
+		  
+		  // 데이터 전송상태가 바뀌면 수행하는 이벤트
+		  // xhr.readyState 
+		  //  0  : new XNLHttpRequest();
+		  //  1  : open
+		  //  2  : send
+		  //  3  : 최초의 data 가 도착하기 시작히면
+		  //  4  : 모든 data 가 도착하면		  
+		  
+		  xhr.onreadystatechange = function() {
+			 // alert(  xhr.readyState );
+			  
+			  if( xhr.readyState = 4 ) {
+				  if( xhr.status == 200 ) {
+					  var data = xhr.responseText;
+					  var div1 = document.getElementById('div1');
+					  div1.innerHTML  = data;
+				  }
+			  }
+		  }
+		  
+		  var  in_id  = document.getElementById('id');
+		  var  loc    = 'c.jsp?id=' + in_id.value;		
+		  xhr.open('GET', loc, true );
+		  	
+		  xhr.send();
+		  
+	  }
+  }
+</script>
+</head>
+<body>
+   <h2>Ajax : Asynchronous Javascript And XML</h2>
+   <p>페이지 전체를 바꾸지 않고 서버의 data를 가져온다</p>
+   아이디<input type="text" id="id" />
+   <button id="btnGetData">Get Data</button>
+   <div id="div1"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style></style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+   function  header3() {
+	   var    head  = '<tr>';
+	   head        += '<td>아이디</td>';
+	   head        += '<td>암호</td>';
+	   head        += '<td>이름</td>';
+	   head        += '<td>이메일</td>';
+	   head        += '<td>날짜</td>';
+	   head        += '</tr>';
+	   return head;
+   }
+
+   function  tableStyle () {
+		// style
+		$('tr:even').css({
+			backgroundColor : 'gray',
+			color           : 'white'
+		})
+		$('tr:odd').css({
+			backgroundColor : 'white',
+			color           : 'gray'
+		})
+//		$('tr:first').css({
+//			backgroundColor : 'black',
+//			color           : 'white'
+//		})
+   }
+
+  $( function() {
+     $('#btnGet').on('click', function() {
+    	 $.ajax({
+    		 url  : 'data/datalist.xml',
+    		 data : {},   // ?id=
+    		 success : function(xml) {
+    			 console.log(xml);
+    			 var html  = '<table>';
+    			 
+    			 $(xml).find('album').each(function(index, album) {
+    				 let  name  = $(album).find('name').text();
+    				 let  song  = $(album).find('song').text();
+    				 let  price = $(album).find('price').text();
+    				 html += '<tr>';
+    				 html += '<td>' +  name   + '</td>';
+    				 html += '<td>' +  song   + '</td>';
+    				 html += '<td>' +  price  + '</td>';
+    				 html += '</tr>';
+    			 });
+    			 
+    			 html     += '</table>';
+    			 $('#div1').html( html );	
+    			 
+    			 tableStyle ()
+    		 },
+    		 error   : function(xhr) {
+    			 alert(xhr.status + '' + xhr.statusText)
+    		 }
+    		 
+    	 }); // ajax end
+     });  // #btnGet end
+     
+   	 //-------------------------------------------
+   	 // enter 키 입력시 조회
+   	 $('#memid').on('keyup', function(e) {
+   		 console.log(e);
+   		 if(e.keyCode== 13) {
+   			 $('#btnGet2').click();
+   		 }
+   	 });
+   	    	 
+   	 // btnGet2 : ajaxmember 조회 -> xml
+   	 $('#btnGet2').on('click', function() {
+   		$.ajax({
+   	//		url    : 'data/ajaxmember.xml',
+    //	    url    : '/PrjAjax/getxml?memid=sky',
+   		//	url    : 'http://localhost:9090/PrjAjax/getxml',
+   			url    : '/PrjAjax/getxml',
+   			data   : {  memid : $('#memid').val()  },
+   			success:function(memberList) {
+   				console.log(memberList);
+   				var html = "<table>";
+   				$(memberList).find('member').each(function(index, member){
+   					let  memid     =  $(member).find('memid').text();
+   					let  mempass   =  $(member).find('mempass').text();
+   					let  memname   =  $(member).find('memname').text();
+   					let  email     =  $(member).find('email').text();
+   					let  rdate     =  $(member).find('rdate').text();
+   					html += '<tr>';
+   					html += '<td>' +  memid    + '</td>';
+   					html += '<td>' +  mempass  + '</td>';
+   					html += '<td>' +  memname  + '</td>';
+   					html += '<td>' +  email    + '</td>';
+   					html += '<td>' +  rdate    + '</td>';
+   					html += '</tr>';
+   				});
+   				html += '</table>';
+   				$('#div1').html(html);
+   				
+   				tableStyle ();
+   				
+   			},
+   			error:function(xhr) {
+   				alert(xhr.status + ':' + xhr.statusText);
+   			}
+   		}) 
+   	 }); // btnGet2 end
+  	 
+  });  // $() end
+ 
+  // memberList 전체 출력 xml
+  $(function() {
+	  $("#btnGet3").on("click", function() {
+		  $.ajax({
+			  url  :  '/PrjAjax/getxmllist',  // 서블릿 주소
+			  data :  {  aa : new Date()  }, // 항상 새로운 데이터를 가져온다
+		      type :  'POST',
+			  success : function( memberList ) {
+				  console.log( memberList );
+				  //alert( memberList );
+				  
+				  var  html  =  '<table>';
+				  html      +=  header3();
+				  $( memberList ).find('member').each(function(index, member){
+					  let   memid    =  $(member).find('memid').text(); 
+					  let   mempass  =  $(member).find('mempass').text(); 
+					  let   memname  =  $(member).find('memname').text(); 
+					  let   email    =  $(member).find('email').text(); 
+					  let   rdate    =  $(member).find('rdate').text(); 
+					  html          +=  '<tr>';
+					  html          +=  '<td>' + memid    + '</td>';
+					  html          +=  '<td>' + mempass  + '</td>';
+					  html          +=  '<td>' + memname  + '</td>';
+					  html          +=  '<td>' + email    + '</td>';
+					  html          +=  '<td>' + rdate    + '</td>';
+					  html          +=  '</tr>';
+				  });
+				  html      +=  '</table>';
+				  
+				  $('#div1').html(html);
+				  
+				  $('table, td').css({ 
+					   border          : '1px solid blue', 
+					   borderCollapse  : 'collapse',
+				  });				  
+				  $('td').css({
+					   padding         : '10px'					   
+				  })
+				  $('tr:eq(0)').css({
+					   'text-align'    : 'center'					   
+				  })
+			  },
+			  error   : function( xhr ) {
+				  alert( xhr.status + ':' + xhr.statusText  )
+			  }				  
+		  }); 	  
+	  })
+	 	   
+  })
+  
+  
+</script>
+</head>
+<body>
+   <button  id="btnGet">Get XML with JQuey</button>
+   <hr>
+   아이디<input type="text" id="memid" value="" />
+   <button  id="btnGet2">Get XML2 with JQuery(ajaxmember)</button>
+   <hr>
+   <button  id="btnGet3">전체목록 추가</button>   
+   <hr>
+   <div id="div1"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

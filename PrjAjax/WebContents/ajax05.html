@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style></style>
+<script>
+
+  function  displayObj(obj) {
+	  var  div1  =  document.getElementById('div1');
+	  var  tag   = '';
+	  tag       += '<ul  style="color:'+ obj.data.color + '">'; 
+	  tag       += '<li>id:' + obj.data.id            + '</li>'; 
+	  tag       += '<li>name:' + obj.data.name          + '</li>'; 
+	  tag       += '<li>year:' + obj.data.year          + '</li>'; 
+	  tag       += '<li>color:' + obj.data.color         + '</li>'; 
+	  tag       += '<li>pantone_value:' + obj.data.pantone_value + '</li>'; 
+	  tag       += '</ul>'; 
+	  div1.innerHTML = tag;
+  }
+
+  var getData  =  function() {
+	  var  num   =  document.getElementById('num').value;  
+	  var  xhr   =  new XMLHttpRequest();
+	  xhr.onload = function() {
+		  var result = xhr.responseText;
+		  console.log(result);
+		 // alert(result.data.color); // error
+		  var obj    = JSON.parse(result);  // string -> json 객체로 변환
+		  console.log(obj); 
+		 // alert(obj.data.color);  
+		  
+		  displayObj(obj);
+	  }
+	  xhr.open('GET', 
+			  'https://reqres.in/api/products/' + num,
+			  true);
+	  xhr.send();
+  };
+
+  window.onload = function() {
+	  var  btnGetData = document.getElementById('btnGetData');
+	  btnGetData.onclick = getData;
+	  
+	  var  num        = document.getElementById('num');
+	  num.addEventListener('change', getData );
+	  
+  }
+</script>
+</head>
+<body>
+  <input type="number"  id="num"  value="1"  min="1" max="12" />
+  <button id="btnGetData">Get Data</button>
+  <div id="div1"></div>
+ </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
